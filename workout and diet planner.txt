@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Workout & Diet Planner with Orders</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .plan, .cart {
+      margin-top: 20px;
+      padding: 10px;
+      background: #eafbea;
+      border-radius: 5px;
+    }
+    .item-list label {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .item-list input[type="checkbox"] {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Workout & Diet Planner</h1>
+  
+  <!-- Planner Section -->
+  <div class="container">
+    <h2>Your Goal</h2>
+    <label>Select your goal:</label>
+    <select id="goal">
+      <option value="lose">Lose Weight</option>
+      <option value="maintain">Maintain</option>
+      <option value="gain">Gain Muscle</option>
+    </select>
+
+    <button onclick="generatePlan()">Generate Plan</button>
+
+    <div class="plan" id="plan">
+      Your plan will appear here...
+    </div>
+  </div>
+
+  <!-- Order Section -->
+  <div class="container">
+    <h2>Order Supplements</h2>
+    <div class="item-list">
+      <label><input type="checkbox" value="Protein Powder"> Protein Powder - ₹1200</label>
+      <label><input type="checkbox" value="Creatine"> Creatine - ₹800</label>
+      <label><input type="checkbox" value="Multivitamin"> Multivitamin - ₹500</label>
+      <label><input type="checkbox" value="Omega 3"> Omega 3 - ₹600</label>
+    </div>
+    <button onclick="placeOrder()">Place Order</button>
+
+    <div class="cart" id="cart">
+      No items ordered yet.
+    </div>
+  </div>
+
+  <script>
+    // Workout & Diet Plan
+    function generatePlan() {
+      let goal = document.getElementById("goal").value;
+      let planText = "";
+
+      if (goal === "lose") {
+        planText = `
+          <b>Workout:</b> 30 min Cardio + Light Strength<br>
+          <b>Diet:</b> Eat more veggies, fruits, lean protein, less sugar.
+        `;
+      } else if (goal === "maintain") {
+        planText = `
+          <b>Workout:</b> 4 days/week mix of cardio & strength<br>
+          <b>Diet:</b> Balanced meals (protein, carbs, fats) in moderation.
+        `;
+      } else if (goal === "gain") {
+        planText = `
+          <b>Workout:</b> 5 days Strength Training + Protein focus<br>
+          <b>Diet:</b> High protein, whole grains, healthy fats, surplus calories.
+        `;
+      }
+
+      document.getElementById("plan").innerHTML = planText;
+    }
+
+    // Order Items
+    function placeOrder() {
+      let checkboxes = document.querySelectorAll('.item-list input[type="checkbox"]');
+      let selected = [];
+      let prices = { "Protein Powder":1200, "Creatine":800, "Multivitamin":500, "Omega 3":600 };
+      let total = 0;
+
+      checkboxes.forEach(cb => {
+        if(cb.checked){
+          selected.push(cb.value);
+          total += prices[cb.value];
+        }
+      });
+
+      if(selected.length > 0){
+        document.getElementById("cart").innerHTML = 
+          "<b>You ordered:</b> " + selected.join(", ") + "<br><b>Total:</b> ₹" + total;
+      } else {
+        document.getElementById("cart").innerHTML = "No items selected.";
+      }
+    }
+  </script>
+</body>
+</html>
